@@ -2,14 +2,14 @@ import React from 'react';
 import './App.css';
 import { Route, Switch } from 'react-router';
 import Splash from './splash/splash';
-import Movie from './movie/movie';
+import Atlas from './atlas/atlas';
 
 function App() {
   return (
     <div className="App">
       <Switch>
         <Route exact path="/" component={Splash} />
-        <Route path="/movie" component={Movie} />
+        <Route path="/movie" component={Atlas} />
       </Switch>
     </div>
   );

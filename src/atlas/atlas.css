@@ -1,0 +1,13 @@
+.country {
+    fill: #cccccc;
+    stroke: #333333;
+    stroke-width: 0.5px;
+}
+
+.selected {
+    fill: yellow;
+}
+
+svg {
+    background-color: white;
+}
