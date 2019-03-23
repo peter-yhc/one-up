@@ -12,9 +12,6 @@ const styles = makeStyles({
   },
 });
 
-const height = 900;
-const width = 1400;
-
 const countryCodes = {};
 d3.tsv(worldData).then((data) => {
   data.forEach((d) => {
@@ -29,16 +26,19 @@ function Atlas() {
   const classes = styles();
 
   const [selectedCountry, setCountry] = useState('');
+  const [scale, setScale] = useState(170);
+  const [atlasSize, setAtlasSize] = useState({ width: 1400, height: 900 });
   const countries = topojson.feature(world, world.objects.countries).features;
 
   useEffect(() => {
+    console.log('use effect');
     const svg = d3.select('#atlas')
-      .attr('height', height)
-      .attr('width', width);
+      .attr('height', atlasSize.height)
+      .attr('width', atlasSize.width);
 
     const projection = d3.geoMercator()
-      .translate([width / 2, height / 5 * 3])
-      .scale(170);
+      .translate([atlasSize.width / 2, atlasSize.height / 5 * 3])
+      .scale(scale);
     const path = d3.geoPath().projection(projection);
 
     let g;
@@ -56,10 +56,17 @@ function Atlas() {
       .attr('d', path)
       .on('mouseover', (d, i, nodes) => {
         d3.select(nodes[i]).classed('selected', true);
-        setCountry(countryCodes[d.id].commonName);
+        if (countryCodes[d.id]) {
+          setCountry(countryCodes[d.id].commonName);
+        }
       })
       .on('mouseout', (d, i, nodes) => {
         d3.select(nodes[i]).classed('selected', false);
+      })
+      .on('click', () => {
+        g.remove();
+        setScale(80);
+        setAtlasSize({ width: 1050, height: 675 });
       });
   });
 
@@ -70,6 +77,7 @@ function Atlas() {
         <svg id="atlas" />
       </div>
       <p>Selected: <span>{selectedCountry}</span></p>
+      <p>scale: <span>{scale}</span></p>
     </React.Fragment>
   );
 }
