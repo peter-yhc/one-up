@@ -41,9 +41,17 @@ function Atlas() {
       .scale(170);
     const path = d3.geoPath().projection(projection);
 
-    svg.selectAll('.country')
+    let g;
+    if (document.querySelectorAll('svg g').length < 1) {
+      g = svg.append('g');
+    } else {
+      g = d3.select('svg g');
+    }
+
+    g.selectAll('.country')
       .data(countries)
-      .enter().append('path')
+      .enter()
+      .append('path')
       .attr('class', 'country')
       .attr('d', path)
       .on('mouseover', (d, i, nodes) => {
